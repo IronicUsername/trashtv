@@ -3,6 +3,7 @@ $ease-in-quint:cubic-bezier(0.755, 0.050, 0.855, 0.060);
 $screen-background:#121010;
 
 .component-flicker-enter-active{
+  @include background-opacity($lightgreen, 0.75);
   animation: turn-on 0.15s infinite;
 }
 
@@ -33,6 +34,7 @@ $screen-background:#121010;
 
   3.5%{
     transform:scale(1,0.8) translate3d(0,100%,0);
+    background-color: $red;
   }
 
   3.6%{
@@ -54,11 +56,14 @@ $screen-background:#121010;
     opacity:0;
   }
 
+  60%{background-color: $blue;}
+
   100%{
     transform:scale(1,1) translate3d(0,0,0);
     -webkit-filter:contrast(1) brightness(1.2) saturate(1.3);
     filter:contrast(1) brightness(1.2) saturate(1.3);
     opacity:1;
+    background-color: transparent;
   }
 }
 

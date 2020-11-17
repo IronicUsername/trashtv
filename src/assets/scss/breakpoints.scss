@@ -1,0 +1,25 @@
+$browser-scrollbar: 16px;
+
+$breakpoints: (
+  'extra-small': (max-width: 600px),
+  'small': (max-width: 960px),
+  'medium': (max-width: 1264px - $browser-scrollbar),
+  'large': (max-width: 1904px - $browser-scrollbar),
+  'extra-large': (min-width: 1904px - $browser-scrollbar),
+);
+
+@mixin respond-to($name) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $name) {
+    // Prints a media query based on the value
+    @media #{inspect(map-get($breakpoints, $name))} {
+      @content;
+    }
+  }
+
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Please make sure it is defined in `$breakpoints` map.";
+  }
+}

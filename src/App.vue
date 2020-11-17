@@ -1,5 +1,8 @@
 <template>
-  <div id="app" class="overlay crt">
+  <div
+    id="app"
+    class="overlay crt"
+  >
     <Background/>
 
     <Content>
@@ -11,26 +14,33 @@
       </div>
 
       <transition name="component-flicker" mode="out-in">
-        <router-view/>
+        <router-view class="component-view"/>
       </transition>
     </Content>
 
     <div class="id-container">
       <a href="">#1234</a>
     </div>
+
+    <Keypress key-event="keydown" @success="controllKeyCheck"/>
   </div>
 </template>
 
 <script>
 import Background from '@/components/Background'
 import Content from '@/components/Content'
+import controll from '@/mixins/controlls'
 import { site } from '@/assets/settings'
 
 export default {
   components: {
     Background,
     Content,
+    Keypress: () => import('vue-keypress'),
   },
+  mixins: [
+    controll,
+  ],
   data: () => ({
     res: null,
     ignoredSiteTitles: ['/', '/page-not-found'],
@@ -55,8 +65,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/assets/scss/animations/crt';
-@import '~@/assets/scss/animations/crt-transition.scss';
+@import '~@/assets/scss/animation/crt';
+@import '~@/assets/scss/animation/crt-transition.scss';
 
 #app{
   background-color: black;
@@ -69,26 +79,12 @@ export default {
 
 .overlay{
   position: fixed;
-  display: none;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-
-  &>.page-title{
-    display: inline-block;
-
-    &>h2 {
-      color: #fff;
-      margin: 0;
-      overflow: hidden; /* Ensures the content is not revealed until the animation */
-      border-right: 10px solid white; /* The typwriter cursor */
-      white-space: nowrap; /* Keeps the content on a single line */
-      animation: blink-caret 1s step-end infinite;
-    }
-  }
 
   &>.id-container{
     position: absolute;
@@ -103,6 +99,26 @@ export default {
   }
 }
 
+.component-view{
+  height: 100%;
+  overflow: auto;
+  border-right: 1px solid $red;
+  padding-right: 15px;
+}
+
+.page-title{
+  display: inline-flex;
+  padding-bottom: 5px;
+
+  &>h2 {
+    color: #fff;
+    margin: 0;
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    border-right: 10px solid white; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    animation: blink-caret 1s step-end infinite;
+  }
+}
 
 @keyframes blink-caret {
   from, to { border-color: transparent }

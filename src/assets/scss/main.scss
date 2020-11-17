@@ -1,4 +1,6 @@
-@import './colors.scss';
+@import './color.scss';
+@import './function.scss';
+@import './breakpoints.scss';
 
 *{font-family: 'Iconsolata', monospace; font-weight: 100; color: white;}
 
@@ -15,7 +17,7 @@ body,
 // Scrollbar
 *{
   scrollbar-width: thin;
-  scrollbar-color: red transparent;
+  scrollbar-color: $red transparent;
 }
 
 ::-webkit-scrollbar{
@@ -31,7 +33,7 @@ body,
 
   /* Handle */
   &-thumb {
-    background: red;
+    background: $red;
 
     &:hover {
       background: #b30000;
