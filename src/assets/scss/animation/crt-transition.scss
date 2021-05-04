@@ -8,8 +8,9 @@ $screen-background:#121010;
 }
 
 .component-flicker-leave-active {
-  animation:flicker 0.15s infinite;
+  animation: flicker 0.15s infinite;
 }
+
 .component-flicker-enter, .component-flicker-leave-to
 /* .component-fade-leave-active below version 2.1.8 */ {
   animation: turn-off 0.55s $ease-out-quint;

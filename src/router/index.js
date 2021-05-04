@@ -16,6 +16,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
+    path: '/controlls',
+    name: 'Controlls',
+    component: () => import(/* webpackChunkName: "controlls" */ '../views/Controlls.vue')
+  },
+  {
     path: '/imprint',
     name: 'Imprint',
     component: () => import(/* webpackChunkName: "imprint" */ '../views/Imprint.vue')

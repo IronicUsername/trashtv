@@ -26,3 +26,9 @@
     Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
   </div>
 </template>
+
+<script>
+export default {
+  name: 'Settings',
+}
+</script>

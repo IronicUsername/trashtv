@@ -7,6 +7,9 @@
       <div>
         <router-link :to="{name: 'Settings'}">settings.</router-link>
       </div>
+      <div>
+        <router-link :to="{name: 'Controlls'}">controlls.</router-link>
+      </div>
     </div>
 
     <div class="content">
@@ -49,7 +52,7 @@ export default {
 
 <style lang="scss" scoped>
 $menu-distance: -15px;
-$menu-distance-x-hover: -100px;
+$menu-distance-x-hover: -110px;
 
 #content-container{
   position: relative;

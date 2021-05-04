@@ -2,25 +2,25 @@
   <div
     id="app"
     class="overlay crt"
+    ref="app"
   >
-    <Background/>
+    <Background :fullscreen="isFullscreen"/>
 
-    <Content>
-      <div class="page-title">
-        <h2>
-          <router-link :to="{name: 'Home'}">></router-link>
-          {{contentTitle}}
-        </h2>
+    <template v-if="!isFullscreen">
+      <Content>
+        <div class="page-title">
+          <h2><router-link :to="{name: 'Home'}">></router-link>{{contentTitle}}</h2>
+        </div>
+
+        <transition name="component-flicker" mode="out-in">
+          <router-view class="component-view"/>
+        </transition>
+      </Content>
+
+      <div class="id-container">
+        <a>#1234</a>
       </div>
-
-      <transition name="component-flicker" mode="out-in">
-        <router-view class="component-view"/>
-      </transition>
-    </Content>
-
-    <div class="id-container">
-      <a href="">#1234</a>
-    </div>
+    </template>
 
     <Keypress key-event="keydown" @success="controllKeyCheck"/>
   </div>
@@ -33,6 +33,7 @@ import controll from '@/mixins/controlls'
 import { site } from '@/assets/settings'
 
 export default {
+  name: 'TrashTV',
   components: {
     Background,
     Content,
@@ -59,7 +60,7 @@ export default {
   watch:{
     $route(to){
       document.title = this.setPageTitle(to)
-    }
+    },
   },
 }
 </script>
@@ -117,6 +118,26 @@ export default {
     border-right: 10px solid white; /* The typwriter cursor */
     white-space: nowrap; /* Keeps the content on a single line */
     animation: blink-caret 1s step-end infinite;
+
+    &>a{
+      text-decoration: none;
+      position: relative;
+      transition: all .2s ease-in-out;
+
+      &:hover{
+        color: grey;
+
+        &::after{
+          content: '';
+          position: absolute;
+          bottom: 0px;
+          left: 0px;
+          width: 100%;
+          height: 4px;
+          background-color: grey;
+        }
+      }
+    }
   }
 }
 

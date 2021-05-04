@@ -1,8 +1,12 @@
 <template>
-  <div class="background-container">
+  <div
+    class="background-container"
+    :style="`width: ${width};height: ${height};`"
+  >
     <div
       class="bg-container"
-      style="background-image: url('https://66.media.tumblr.com/c4363095b816201250590f9b461db3fa/tumblr_mvpe9zgBbz1szjg4fo1_500.gif')"
+      :style="`background-image: url('https://66.media.tumblr.com/c4363095b816201250590f9b461db3fa/tumblr_mvpe9zgBbz1szjg4fo1_500.gif');
+               visibility:${visibility};`"
     />
     <div
       class="fg-container"
@@ -14,8 +18,18 @@
 <script>
 export default {
   name: 'Background',
+  props:{
+    fullscreen: {
+      type: Boolean,
+      default: false,
+      required: true,
+    }
+  },
   data: () => ({
     apiResponse: null,
+    width: '60%',
+    height: '65%',
+    visibility: 'hidden',
   }),
   methods: {
     getData(){
@@ -28,6 +42,19 @@ export default {
         })
     },
   },
+  watch: {
+    fullscreen(value){
+      if(value){
+        this.width = '100%'
+        this.height = '100%'
+        this.visibility = 'visible'
+      } else{
+        this.width = '60%'
+        this.height = '65%'
+        this.visibility = 'hidden'
+      }
+    }
+  }
 }
 </script>
 

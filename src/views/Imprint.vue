@@ -8,3 +8,9 @@
     <p>e-mail: me@trash-economy.io</p>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'Imprint',
+}
+</script>

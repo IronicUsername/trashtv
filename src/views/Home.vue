@@ -3,14 +3,17 @@
     <h2>hi.</h2>
     <div>
       <span>go relax mode <i>light</i></span>
-      <span>go <b>FULL</b> relax mode</span>
+      <span @click="toggleFullscreen()">go <b>FULL</b> relax mode</span>
     </div>
   </div>
 </template>
 
 <script>
+import controll from '@/mixins/controlls'
+
 export default {
   name: 'Home',
+  mixins: [controll],
 }
 </script>
 

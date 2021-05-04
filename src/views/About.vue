@@ -10,3 +10,9 @@
     <p>i want to create a own mod of this page tho.. so its just a cheap rip off <span style="font-style: italic;">for now</span> ^^</p>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'About',
+}
+</script>
