@@ -3,54 +3,44 @@ const WARN = 1;
 const ERROR = 2;
 
 module.exports = {
-  'root': true,
-  'env': {
+  root: true,
+  env: {
     node: true
   },
-  'extends': [
+  extends: [
     'plugin:vue/essential',
     'eslint:recommended'
   ],
-  'parserOptions': {
-    'ecmaVersion': 2020
+  parserOptions: {
+    parser: 'babel-eslint',
+    ecmaVersion: 2020,
   },
-  'rules': {
-    // Allowed a getter without setter, but all setters require getters
-    'accessor-pairs': [ERROR, {
-      'getWithoutSet': false,
-      'setWithoutGet': true,
-    }],
-    'block-scoped-var': WARN,
+  rules: {
     'comma-dangle': OFF,
-    'complexity': [ERROR, {'max': 10}],
-    'eqeqeq': WARN,
+    'complexity': [ERROR, {max: 10}],
     'indent': [WARN, 2, {
-      'ArrayExpression': 'first',
-      'ObjectExpression': 'first',
-      'VariableDeclarator': 'first',
-      'SwitchCase': 1,
+      ArrayExpression: 'first',
+      ObjectExpression: 'first',
+      VariableDeclarator: 'first',
+      SwitchCase: 1,
     }],
-    'keyword-spacing': [WARN, {
-      'before': true,
-      'after': false,
-      'overrides': {'default': {'after': true},
-                    'from': {'after': true},
-                    'import': {'after': true},
-                    'return': {'after': true}}
-    }],
-    'max-len': [ERROR, {'code': 159}],
-    'no-multiple-empty-lines': [ERROR, {
-      'max': 2,
-      'maxEOF': 1,
-    }],
-    'no-unexpected-multiline': ERROR,
-    'object-curly-spacing': OFF,
-    'object-curly-newline': OFF,
+    'max-len': [ERROR, {code: 159}],
+    'no-multiple-empty-lines': [ERROR, {max: 2, maxEOF: 1}],
     'quotes': [WARN, 'single'],
-    'quote-props': [WARN, 'consistent'],
-    'spaced-comment': [OFF],
-    'space-before-function-paren': [WARN, 'never'],
     'sort-imports': WARN,
+    'space-before-function-paren': [WARN, 'never'],
+    'space-before-blocks': [WARN, { functions: 'never', keywords: 'never', classes: 'never' }],
+    'keyword-spacing': [WARN, {
+      before: true,
+      after: false,
+      overrides: {
+        case: {after: true},
+        default: {after: true},
+        from: {after: true},
+        return: {after: true},
+        import: {after: true},
+      }
+    }],
 
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'

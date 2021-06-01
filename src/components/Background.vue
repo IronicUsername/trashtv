@@ -1,16 +1,16 @@
 <template>
   <div
     class="background-container"
-    :style="`width: ${width};height: ${height};`"
+    :style="`width: ${gifAttrib.width};height: ${gifAttrib.height};`"
   >
     <div
       class="bg-container"
-      :style="`background-image: url('https://66.media.tumblr.com/c4363095b816201250590f9b461db3fa/tumblr_mvpe9zgBbz1szjg4fo1_500.gif');
-               visibility:${visibility};`"
+      :style="`background-image: url('${bg}');
+               visibility:${gifAttrib.visibility};`"
     />
     <div
       class="fg-container"
-      style="background-image: url('https://66.media.tumblr.com/c4363095b816201250590f9b461db3fa/tumblr_mvpe9zgBbz1szjg4fo1_500.gif')"
+      :style="`background-image: url('${fg}')`"
     />
   </div>
 </template>
@@ -23,7 +23,17 @@ export default {
       type: Boolean,
       default: false,
       required: true,
-    }
+    },
+    bg: {
+      type: String,
+      default: '',
+      required: true,
+    },
+    fg: {
+      type: String,
+      default: '',
+      required: true,
+    },
   },
   data: () => ({
     apiResponse: null,
@@ -31,6 +41,18 @@ export default {
     height: '65%',
     visibility: 'hidden',
   }),
+  computed: {
+    gifAttrib(){
+      let w = this.fullscreen ? '100%' : '60%'
+      let h = this.fullscreen ? '100%' : '65%'
+      let v = this.fullscreen ? 'visible' : 'hidden'
+      return {
+        width: w,
+        height: h,
+        visibility: v,
+      }
+    }
+  },
   methods: {
     getData(){
       console.log('now')
@@ -42,19 +64,6 @@ export default {
         })
     },
   },
-  watch: {
-    fullscreen(value){
-      if(value){
-        this.width = '100%'
-        this.height = '100%'
-        this.visibility = 'visible'
-      } else{
-        this.width = '60%'
-        this.height = '65%'
-        this.visibility = 'hidden'
-      }
-    }
-  }
 }
 </script>
 

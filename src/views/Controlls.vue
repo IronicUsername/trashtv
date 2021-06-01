@@ -1,6 +1,6 @@
 <template>
-  <div>
-    lol was geht
+  <div id="controlls-container">
+    soon to come...
   </div>
 </template>
 

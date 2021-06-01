@@ -4,12 +4,18 @@
     class="overlay crt"
     ref="app"
   >
-    <Background :fullscreen="isFullscreen"/>
+    <Background
+      :fullscreen="$isFullscreen || $isLightscreen"
+      :bg="background"
+      :fg="foreground"
+    />
 
-    <template v-if="!isFullscreen">
+    <template v-if="!$isFullscreen && !$isLightscreen">
       <Content>
         <div class="page-title">
-          <h2><router-link :to="{name: 'Home'}">></router-link>{{contentTitle}}</h2>
+          <h2>
+            <router-link :to="{name: 'Home'}">></router-link>{{contentTitle}}
+          </h2>
         </div>
 
         <transition name="component-flicker" mode="out-in">
@@ -18,44 +24,67 @@
       </Content>
 
       <div class="id-container">
-        <a>#1234</a>
+        <a :href="`https://archillect.com/${gId}`" target="_blank">#{{gId}}</a>
       </div>
     </template>
-
-    <Keypress key-event="keydown" @success="controllKeyCheck"/>
   </div>
 </template>
 
 <script>
 import Background from '@/components/Background'
 import Content from '@/components/Content'
-import controll from '@/mixins/controlls'
+
+import fullscreen from '@/mixins/fullscreen'
 import { site } from '@/assets/settings'
 
 export default {
   name: 'TrashTV',
+  mixins: [fullscreen],
   components: {
     Background,
     Content,
-    Keypress: () => import('vue-keypress'),
   },
-  mixins: [
-    controll,
-  ],
   data: () => ({
-    res: null,
     ignoredSiteTitles: ['/', '/page-not-found'],
+    background: null,
+    foreground: null,
+    gId: null,
   }),
   computed: {
     contentTitle(){
       if(this.ignoredSiteTitles.indexOf(this.$route.path) >= 0) return '~'
-      return `.${this.$route.name.toLowerCase()}`
+      return `/${this.$route.name.toLowerCase()}`
     },
   },
   methods: {
     setPageTitle(toRoute){
       return toRoute.name ? toRoute.name.toLowerCase() + ' :|: ' + site.name : site.name;
     },
+    async setBkg(){
+      let data = {}
+      await this.$axios.get('/getTV')
+        .then(r => {
+          data = r.data
+        })
+        .catch(e => {
+          console.error(e)
+        })
+
+      this.background = data.screenbg
+      this.foreground = data.screenfg
+      this.gId = data.gifid
+
+      setTimeout(() => {
+        this.background = data.buffer
+        this.foreground = data.buffer
+        this.gId = data.gifid_buffer
+      }, 5000)
+    },
+  },
+  mounted(){
+    setInterval(() => {
+      this.setBkg()
+    }, 10000)
   },
   watch:{
     $route(to){
@@ -70,8 +99,6 @@ export default {
 @import '~@/assets/scss/animation/crt-transition.scss';
 
 #app{
-  background-color: black;
-
   &>div{
     margin: auto;
     z-index: 1;
@@ -80,8 +107,6 @@ export default {
 
 .overlay{
   position: fixed;
-  width: 100%;
-  height: 100%;
   top: 0;
   left: 0;
   right: 0;

@@ -1,9 +1,6 @@
 <template>
   <div id="content-container">
-    <div
-      class="content-box-before"
-      @click="selectBlue()"
-    >
+    <div class="content-box-before">
       <div>
         <router-link :to="{name: 'Settings'}">settings.</router-link>
       </div>
@@ -16,10 +13,7 @@
       <slot/>
     </div>
 
-    <div
-      class="content-box-after"
-      @click="selectRed()"
-    >
+    <div class="content-box-after">
       <div>
         <router-link :to="{name: 'About'}">.about</router-link>
       </div>
@@ -36,17 +30,8 @@
 export default {
   name: 'Content',
   data: () => ({
-    menuBefore: [{to: 'About'},{to: 'Imprint'},{to: 'Settings'}],
     app_version: process.env.VUE_APP_VERSION,
   }),
-  methods: {
-    selectRed(){
-      console.log('clicked red')
-    },
-    selectBlue(){
-      console.log('clicked blue')
-    },
-  },
 }
 </script>
 

@@ -2,18 +2,18 @@
   <div class="home">
     <h2>hi.</h2>
     <div>
-      <span>go relax mode <i>light</i></span>
-      <span @click="toggleFullscreen()">go <b>FULL</b> relax mode</span>
+      <a @click="$toggleLightscreen()">go relax mode <i>light</i></a>
+      <a @click="$toggleFullscreen()">go <b>FULL</b> relax mode</a>
     </div>
   </div>
 </template>
 
 <script>
-import controll from '@/mixins/controlls'
+import fullscreen from '@/mixins/fullscreen'
 
 export default {
   name: 'Home',
-  mixins: [controll],
+  mixins: [fullscreen]
 }
 </script>
 
@@ -32,10 +32,14 @@ export default {
     flex-direction: column;
     text-decoration: underline;
 
-    &>span{
+    &>a{
       margin: 10px 0;
       &:nth-child(2){
         margin-left: auto;
+      }
+
+      &:hover{
+        cursor: pointer;
       }
 
       &::after{
