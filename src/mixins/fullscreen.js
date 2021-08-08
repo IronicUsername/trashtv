@@ -1,26 +1,45 @@
 export default {
   mounted(){
-    addEventListener('keydown', this.checkKey)
+    addEventListener('keydown', this.onKeyPress)
   },
   beforeDestroy(){
-    removeEventListener('keydown', this.checkKey)
+    removeEventListener('keydown', this.onKeyPress)
   },
   methods: {
-    checkKey(event){
-      const keyCode = event.code
+    onKeyPress(e){
+      const keyCode = e.code
       const states = {
-        alt: event.altKey,
-        ctrl: event.ctrlKey,
-        meta: event.metaKey,
-        shift: event.shiftKey,
+        alt: e.altKey,
+        ctrl: e.ctrlKey,
+        meta: e.metaKey,
+        shift: e.shiftKey
       }
 
       switch(keyCode){
         case 'Space':
-          states.shift ? this.$toggleFullscreen() : this.$toggleLightscreen()
+          if(states.ctrl){
+            this.$toggleFullscreen(!this.$isFullscreen)
+            break
+          }
+
+          if(!this.$isFullscreen){
+            this.$toggleLightscreen()
+            break
+          }
           break
         case 'Escape':
-          if(this.$isLightscreen) this.$toggleLightscreen()
+          if(this.$isLightscreen){
+            this.$toggleLightscreen()
+          } else if(this.$isFullscreen){
+            this.$toggleFullscreen(false)
+          }
+          break
+        case 'KeyS':
+          var win = open(this.$apiData.screenbg, '_blank')
+          win ? win.focus() : alert('allow opening popup windows if you want to use this function')
+          break
+        case 'KeyL':
+          open(`https://archillect.com/${this.$apiData.gifid}`, '_blank').focus()
           break
         default: break
       }

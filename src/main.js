@@ -13,6 +13,7 @@ let globalData = new Vue({
   data: {
     $isFullscreen: false,
     $isLightscreen: false,
+    $apiData: {},
   }
 });
 Vue.mixin({
@@ -24,6 +25,10 @@ Vue.mixin({
     $isLightscreen: {
       get: function(){ return globalData.$data.$isLightscreen },
       set: function(newState){ globalData.$data.$isLightscreen = newState; }
+    },
+    $apiData: {
+      get: function(){ return globalData.$data.$apiData },
+      set: function(newState){ globalData.$data.$apiData = newState; }
     },
   }
 })

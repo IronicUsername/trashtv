@@ -5,28 +5,24 @@
     ref="app"
   >
     <Background
-      :fullscreen="$isFullscreen || $isLightscreen"
-      :bg="background"
-      :fg="foreground"
+      :img-url="activeImg"
+      :fullscreen="$isFullscreen"
+      :lightscreen="$isLightscreen"
     />
 
-    <template v-if="!$isFullscreen && !$isLightscreen">
-      <Content>
-        <div class="page-title">
-          <h2>
-            <router-link :to="{name: 'Home'}">></router-link>{{contentTitle}}
-          </h2>
-        </div>
-
-        <transition name="component-flicker" mode="out-in">
-          <router-view class="component-view"/>
-        </transition>
-      </Content>
-
-      <div class="id-container">
-        <a :href="`https://archillect.com/${gId}`" target="_blank">#{{gId}}</a>
+    <Content v-if="!$isFullscreen && !$isLightscreen">
+      <div class="page-title">
+        <h2>
+          <router-link :to="{name: 'Home'}">></router-link>{{contentTitle}}
+        </h2>
       </div>
-    </template>
+
+      <transition name="component-flicker" mode="out-in">
+        <router-view class="component-view"/>
+      </transition>
+    </Content>
+
+    <a v-if="!$isFullscreen && !$isLightscreen" id="img-id" target="_blank" :href="`https://archillect.com/${activeId}`">#{{ activeId }}</a>
   </div>
 </template>
 
@@ -46,9 +42,10 @@ export default {
   },
   data: () => ({
     ignoredSiteTitles: ['/', '/page-not-found'],
-    background: null,
-    foreground: null,
-    gId: null,
+    activeImg: '',
+    activeId: '',
+
+    gId: '',
   }),
   computed: {
     contentTitle(){
@@ -56,35 +53,35 @@ export default {
       return `/${this.$route.name.toLowerCase()}`
     },
   },
+  mounted(){
+    this.fetchAPI()
+    window.setInterval(() => {
+      this.fetchAPI()
+    }, 10000)
+  },
+  beforeDestroy(){
+    clearInterval(this.fetchAPI())
+  },
   methods: {
     setPageTitle(toRoute){
       return toRoute.name ? toRoute.name.toLowerCase() + ' :|: ' + site.name : site.name;
     },
-    async setBkg(){
-      let data = {}
-      await this.$axios.get('/getTV')
-        .then(r => {
-          data = r.data
-        })
-        .catch(e => {
-          console.error(e)
-        })
+    async fetchAPI(){
+      const ar = await this.$axios.get('getTV')
+      this.$apiData = ar.data
 
-      this.background = data.screenbg
-      this.foreground = data.screenfg
-      this.gId = data.gifid
-
-      setTimeout(() => {
-        this.background = data.buffer
-        this.foreground = data.buffer
-        this.gId = data.gifid_buffer
+      this.setImg(ar.data.screenbg, ar.data.gifid)
+      setTimeout(x => {
+        this.setImg(ar.data.buffer, ar.data.gifid_buffer)
+        clearInterval(x)
       }, 5000)
     },
-  },
-  mounted(){
-    setInterval(() => {
-      this.setBkg()
-    }, 10000)
+    setImg(url, id){
+      Promise.all([
+        this.activeImg = url,
+        this.activeId = id
+      ])
+    }
   },
   watch:{
     $route(to){
@@ -111,18 +108,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-
-  &>.id-container{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 25px;
-
-    &>a{
-      color: white;
-      text-decoration: none;
-    }
-  }
+  filter: brightness(125%);
 }
 
 .component-view{
@@ -164,6 +150,13 @@ export default {
       }
     }
   }
+}
+#img-id{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: white;
+  padding: 15px;
 }
 
 @keyframes blink-caret {
