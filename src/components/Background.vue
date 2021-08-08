@@ -1,74 +1,43 @@
 <template>
   <div
-    class="background-container"
-    :style="`width: ${gifAttrib.width};height: ${gifAttrib.height};`"
+    id="bg-container"
+    :style="`width: ${cWidth}%;height: ${cHeight}%`"
   >
-    <div
-      class="bg-container"
-      :style="`background-image: url('${bg}');
-               visibility:${gifAttrib.visibility};`"
+    <img
+      id="bg"
+      :src="imgUrl"
+      :style="`visibility: ${fullscreen || lightscreen ? 'visible' : 'hidden'}`"
     />
-    <div
-      class="fg-container"
-      :style="`background-image: url('${fg}')`"
-    />
+
+    <img id="fg" :src="imgUrl" />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Background',
-  props:{
+  props: {
+    imgUrl: {
+      type: String,
+      default: ''
+    },
     fullscreen: {
       type: Boolean,
-      default: false,
-      required: true,
+      default: false
     },
-    bg: {
-      type: String,
-      default: '',
-      required: true,
-    },
-    fg: {
-      type: String,
-      default: '',
-      required: true,
-    },
-  },
-  data: () => ({
-    apiResponse: null,
-    width: '60%',
-    height: '65%',
-    visibility: 'hidden',
-  }),
-  computed: {
-    gifAttrib(){
-      let w = this.fullscreen ? '100%' : '60%'
-      let h = this.fullscreen ? '100%' : '65%'
-      let v = this.fullscreen ? 'visible' : 'hidden'
-      return {
-        width: w,
-        height: h,
-        visibility: v,
-      }
+    lightscreen: {
+      type: Boolean,
+      default: false
     }
   },
-  methods: {
-    getData(){
-      console.log('now')
-      const url = 'getTV'
-      this.$api
-        .get(url)
-        .then(response => {
-          this.apiResponse = response.data;
-        })
-    },
-  },
+  computed: {
+    cWidth(){ return this.fullscreen || this.lightscreen ? '100' : '60' },
+    cHeight(){ return this.fullscreen || this.lightscreen ? '100' : '65' }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.background-container{
+#bg-container{
   position: absolute;
   top: 50%;
   left: 50%;
@@ -79,21 +48,22 @@ export default {
   transform: translate(-50%, -50%);
   transition: all .2s ease-in-out;
 
-  &>div{
+  &>img{
     width: 100%;
     height: 100%;
     position: fixed;
     top: 0;
+    border: hidden;
     background-repeat: no-repeat;
     background-position: center;
   }
 
-  &>.bg-container{
-    background-size: cover;
+  &>#bg{
+    object-fit: cover;
   }
 
-  &>.fg-container{
-    background-size: contain;
+  &>#fg{
+    object-fit: contain;
   }
 }
 </style>
