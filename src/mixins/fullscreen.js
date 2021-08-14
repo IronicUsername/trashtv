@@ -14,7 +14,7 @@ export default {
         meta: e.metaKey,
         shift: e.shiftKey
       }
-
+      console.log('das ist ein test')
       switch(keyCode){
         case 'Space':
           if(states.ctrl){
