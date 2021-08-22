@@ -14,7 +14,7 @@ export default {
         meta: e.metaKey,
         shift: e.shiftKey
       }
-      console.log('das ist ein driter test tesch test')
+      console.log('das ist ein driter test tesch test test 3 bro')
       switch(keyCode){
         case 'Space':
           if(states.ctrl){
